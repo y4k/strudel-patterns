@@ -1,0 +1,41 @@
+// DARKWAVE
+setcpm(90/4)
+
+kick: s("bd:6!4")
+  .orbit(1)
+  .duck(2)
+  .duckattack(0.25)
+
+hat: s("[- - - hh:2*4]")
+   .gain(time.range(0,1).div(10).fmap(x => Math.min(x, 1.2)))
+
+bass: note("D F#3 A3 E3".octave(-2))
+  .sound("wt_digital:0, supersaw")
+  .wt("0.3")
+  .wtenv(".1 .6 .2 .6")
+  .unison("16")
+  .diode("2:0.3")
+  .struct("x*8")
+  .fast(2)
+  .orbit(16)
+  //.penv(irand(4).div(8).seg(8))
+  .postgain(0.5)
+  .mask(time.gte(6))
+
+scale: n("<0 1 <2 3> <3 4>>*4")
+  .scale("c:minor")
+  .octave("-2, -1, 0")
+  .sound("supersaw")
+  .fast(4)
+  .orbit(2)
+  .gain(slider(1,0,1))
+  //.mask(time.gte(6))
+
+snare: s("sd:4")
+  .beat("0 2", 4)
+  .sustain(0.9)
+  .mask(time.gte(5))
+
+_melody : n("<0 1 2 3 4 5 6>*16")
+  .scale("g:major")
+  .octave("3")
