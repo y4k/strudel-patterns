@@ -1,0 +1,33 @@
+setcpm(130/4)
+
+$: //s("cp, bd")
+  note("0 1 [2?,3]".scale('A minor'))
+  .euclid(3,8)
+
+$: s("cp, bd")
+  .euclid(3,8)
+  .postgain(0.3)
+  .duck(2)
+  .duckattack(0.25)
+
+$: note("<a1 c1>*16")
+  .sound("supersaw")
+  .gain(1.5)
+  .orbit(2)
+  .lpf(500)
+  .lpa(.5)
+  .lpenv("<4 2 1 0 -1 -2 -4>/4")
+
+S$: n("<0 1 4 3 4 3 4>")
+  .scale("G:minor")
+  .sound("gm_viola")
+  .struct("x - x x? x")
+  .fast(3)
+  ._pianoroll()
+
+_$: chord("<A- G E>")
+  .voicing()
+  .sound("gm_viola")
+  .transpose(-12)
+  .room(0.3)
+  ._pianoroll()
