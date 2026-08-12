@@ -1,0 +1,32 @@
+setcpm(145/4)
+
+await samples('github:tidalcycles/dirt-samples/master')
+
+$: s("alesissr16_hh")
+//  .struct("x x - x - [x x x] - x -")
+  .struct(`<
+  x x x -
+  - - x -
+  - - x -
+  - x x? x?>*16`)
+  .hpf(800)
+  ._spectrum()
+$: s("popkick*4")
+  .lpf(500)
+  .attack(0.01)
+
+$: s("cp")
+  .struct("<x - - ->*4")
+  .orbit(2)
+
+_S$: n("6")
+  .s("ulgab")
+  .scale("C:major")
+  .fast(4)
+  .attack(0.00)
+  .sustain(0.2)
+  .decay("<0 0.1 0.5 1.0 1.5>")
+  ._spectrum()
+  
+
+all(x => x._pianoroll({labels:true}))
