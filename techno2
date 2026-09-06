@@ -1,0 +1,95 @@
+// Techno testing
+setcpm(120/4)
+
+kick: s("bd").beat("0 4 8 12", 16)
+
+hh: s("hh").beat("2 6 10 14",16)
+
+dotted_baseline: s("sine")
+  .note("C4")
+  .postgain(1.3)
+  //.struct("x - - x - - x - ")
+  .struct("x - - x - - x - - x - - x - x -")
+  ._scope()
+
+all(x => x._pianoroll())
+  
+
+const lead = n("0 2 4 7")
+  .s("sine")
+  .scale("D:minor")
+  .striate(4)
+  ._pianoroll()
+
+const highhat = s("<- hh - [hh hh]>*8").orbit(2)
+
+const kick = s("bd:4*4")
+  .bank("mc303")
+  .lpf(800)
+  .postgain(0.7)
+  .duck(2)
+  .duckattack(0.01)
+  
+const rumble = s("bd")
+  .bank("emusp12")
+  .fast(4)
+  .room(3)
+  .dry(0)
+  .lpf(200)
+  .delay(1)
+  .compressor(10)
+  .orbit(2)
+
+const clap =s("cp")
+  .bank("bossdr110")
+  .struct("- x - x x - x? -")
+  .hpf(2500)
+  .fast(2)
+  .room(2)
+  .delay("<0 2?>")
+  .decay(0.2)
+  .postgain(0.4)
+
+const bassline_follow = note("[g3 -]")
+  .s("supersaw")
+  .someCyclesBy(0.3, x => x.adsr("<0.001:0.525:0:0.6 0.004:0.259:0:0.6>"))
+  .unison(3)
+  .diode(2)
+  .fast(16)
+  .gain(0.2)
+  .orbit(2)
+
+const bassline = note("[c2 -]")
+  .s("supersaw")
+  .someCyclesBy(0.3, x => x.adsr("<0.001:0.525:0:0.6 0.004:0.259:0:0.6>"))
+  .lpf(slider(283,0,500))
+  .lpattack(0.004)
+  .lpdecay(0.259)
+  .unison(3)
+  .fast(16)
+  .gain(1.2)
+
+const wail = note("<D E>")
+  .octave("1")
+  .s("supersaw")
+  .struct("x*16")
+  .adsr("0.001:0.525:0:0.6")
+  .lpf(sine.range(400,900))
+  .lpattack(0.004)
+  .lpdecay(0.259)
+  .lpsustain(0)
+  .lprelease(0.600)
+  .unison(1)
+  .penv(1)
+  .postgain(slider(0.559,0,1))
+
+_all:stack(
+  kick.postgain(slider(1,0,1)),
+  highhat.postgain(slider(0.96,0,1)),
+  rumble.postgain(slider(1,0,1)),
+  clap.postgain(slider(0,0,1)),
+  bassline_follow.postgain(slider(0,0,1)),
+  bassline.postgain(slider(0,0,1)),
+  wail.postgain(slider(0,0,1)),
+  lead.postgain(slider(1,0,1))
+)
