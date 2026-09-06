@@ -1,0 +1,1 @@
+register('acidlpf', (cutoff, pat) => pat.lpf(cutoff).lpa(0.01).lpd(0.2).lpq(2).lpe(2))
