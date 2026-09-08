@@ -1,3 +1,11 @@
 // acid low pass filter -> nasal sounding. adjust cutoff to match incoming frequency
 register('acidlpf', (cutoff, pat) => pat.lpf(cutoff).lpa(0.01).lpd(0.2).lpq(2).lpe(2))
 
+register(
+  'rumble',
+  (cutoff, reverb, delay, compression, pat) => pat
+  .room(reverb)
+  .dry(0)
+  .lpf(cutoff)
+  .delay(delay)
+  .compressor(compression))
