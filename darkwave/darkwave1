@@ -1,0 +1,27 @@
+// Might be darkwave, might be techno. Polymeter? Needs highs
+setcpm(138/4)
+
+kick: s("bd:4*4")
+  .bank("mc303")
+  .lpf(800)
+  .postgain(0.7)
+  .duck(2)
+  .duckdepth(0.1)
+  .postgain(0.5)
+
+bass: note("c2*4")
+  .s("supersaw")
+  //.someCyclesBy(0.3, x => x.adsr("<0.001:0.525:0:0.6 0.004:0.259:0:0.6>"))
+  .acidlpf(slider(258,0,500))
+  .unison(10)
+  .jux(y => y.off(0.2, x => x.velocity("[0 0 0.6 1]").acidlpf(slider(285,0,500))))
+  .velocity("[0 0.3 1 0.8]")
+  .fast(4)
+
+polymeter: note("{c eb g, c2 g2}%6")
+   .scale("g:phrygian")
+   .s("supersaw")
+   .octave("0")
+   .unison(3)
+   .acidlpf(500)
+   ._pianoroll()
