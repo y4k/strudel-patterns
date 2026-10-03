@@ -1,0 +1,73 @@
+setcpm(120/4)
+
+const kick = s("gm_melodic_tom*4")
+  .lpf(300)
+  .lpenv(4)
+  .superimpose(x=>x.add(2).adsr("0.01:0.3:0:0"))
+  .superimpose(x=>x.adsr("0.01:0.05:0:0"))
+  .gain(1.4)
+  .duck(2)
+
+const tom = s("ht")
+  .bank("rolandtr909")
+  .struct("<- x x? x>")
+  .sometimesBy(0.3, x => x.ply(2))
+  .fast(8)
+
+const gallop = s("supersaw")
+  .struct("<x x x x>")
+  .velocity("<0 0.4 1 0.8>")
+  .fast(16)
+  .unison(4)
+
+const dotted_bass = s("supersaw")
+  .note("G3")
+  .octave("-2, -1, 1")
+  .postgain(1.2)
+  .struct("x - - x - - x - - x - - x - x -")
+  .detune(0.9)
+  .unison(10)
+
+const highhat = s("hh * 16")
+  .hpf(5000)
+
+_$: note("c2 e2 f2 g2")
+.sound('sawtooth')
+.lpf(300)
+.lpa(.5)
+.lpenv("<4 2 1 0 -1 -2 -4>/4")
+
+const PATTERN = `<
+  x@2 - x
+  x - x@2
+  x@2 - x@2
+  x x@2>*16`
+
+const marimba = note("c4")
+  .struct(PATTERN)
+  .s("gm_marimba:0")
+  .lpf(1300)
+  .lpenv(-4)
+  .superimpose(x => x.s("gm_marimba:4"))
+
+const marimba_follow = note("c4")
+  .struct(PATTERN)
+  .s("supersaw")
+  .adsr("0.01:0.3:0:0")
+  .lpf(1000)
+  .fm(choose(2, 3, 4))  .fmh(4)  .fmdecay(0.2)
+
+// =================
+
+const lead_stack = stack(
+  marimba.postgain(slider(0.709,0,1)),
+  marimba_follow.postgain(slider(1,0,1))
+)
+
+const drum_stack = stack(
+  kick.postgain(slider(1,0,1)),
+  tom.postgain(slider(0,0,1)),
+  dotted_bass.postgain(slider(0.609,0,1)),
+  gallop.postgain(slider(0.677,0,1)),
+  highhat.postgain(slider(1,0,1)),
+)
