@@ -1,0 +1,8 @@
+register('rolling_sub', (cutoff, pat) => pat
+  .lpf(cutoff)
+  .lpenv(4)
+  .delay(5)
+  .dry(0)
+  .room(2)
+  .roomsize(3)
+  .compressor(-20))
