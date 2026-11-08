@@ -1,0 +1,107 @@
+// Synth exploration
+
+//Oscilators
+
+_$SINE: s("sine").note("C3")._pianoroll()
+
+_$SAW: s("saw").note("C3")._pianoroll()
+
+_$SUPERSAW: s("supersaw").note("C3")._pianoroll()
+
+_$SAW: s("square").note("C3")._pianoroll()
+// Envelopes
+// Volume ADSR
+
+// Only sustain. Note remains at that level for entire length.
+_$: s("saw").note("C3").slow(2)
+  .attack(0)
+  .decay(0)
+  .sustain(1)
+  .release(0)
+  ._pianoroll()
+// Decay only. Note decays to sustain level immediately after attack i.e the start of the note
+_$: s("saw").note("C3").slow(2)
+  .attack(0)
+  .decay(slider(4,0,4,.1))
+  .sustain(0)
+  .release(0)
+  ._pianoroll()
+// Attack only. How quickly the note ramps up from the start
+_$: s("saw").note("C3").slow(2)
+  .attack(slider(4,0,4,0.01))
+  .decay(0)
+  .sustain(1)
+  .release(0)
+  ._pianoroll()
+// Release only. How the note fades after it ends
+_$: s("[saw -]").note("C3").slow(2)
+  .attack(0)
+  .decay(0)
+  .sustain(1)
+  .release(slider(2,0,2,0.1))
+  ._pianoroll()
+
+// Pitch envelope
+// Prelease must be combined with release on the volume envelope
+// Negate the envelope for starting low and moving higher.
+// Linear -> combine attack and decay to control where the peak pitch is in the length of the note
+_$: s("[sine -]").note("C4")
+  .penv("<32 -32>")
+  .pcurve("<0 1>/2")
+  .slow(2)
+  .release(1.5)
+  .pattack(slider(0,0,2,0.1))
+  .pdecay(slider(2,0,2,0.1))
+  .psustain(0.5)
+  .prelease(slider(2,0,2,0.1))
+  ._spectrum()// LFOs
+/* LFO controls the previous function e.g lpf, note etc
+*/
+
+// Vibrato when applied to pitch i.e note.
+// rate or sync to control oscillation rate of the LFO compared to the main oscilator
+// Shape index determines the shape of the lfo.
+/*
+0 - triangle
+1 - sine
+2 - linear increasing
+3 - linear decreasing
+4 - square wave
+
+Skew controls the peak of the shape
+Depth controls the height of the peak
+*/
+_$: s("saw")
+  .slow(2)
+  .note("C3").lfo({s:slider(1,0,30,1), shape:0, skew:slider(0,0,1,0.1), depth:1, dcoffset:0})
+  ._spectrum()
+// Tremolo - Modulates the amplitude i.e. the postgain
+_$: s("saw")
+  .slow(2)
+  .note("C3")
+  .lfo({c:"postgain", s:slider(21,0,30,1), shape:0, skew:slider(0.3,0,1,0.1), depth:1, dcoffset:-0.5})
+  ._spectrum()
+
+// Example
+// Benny Benassi
+
+setcpm(130/4)
+
+const kick = s("[bd - [bd,cp] -]").fast(2).lpf(600)
+
+const lead = note(`<
+          A1@4
+          E1 - A0 -
+          - - - -
+          [A#1 -] [A#1 -] [A#1 -] A#1>`)
+  .s("saw")
+  .adsr("0.0:0.8:0:0.08")
+  //.diode(0.8).compressor(-20)
+  .fast(16)
+  ._spectrum()
+
+_$: stack(
+  lead,
+  kick
+)
+
