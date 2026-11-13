@@ -1,0 +1,42 @@
+// Breakbeats
+
+setcpm(115/4)
+
+$: s("supersaw")
+  //.n(irand(8).add("0,3,7"))
+  // .n(irand(8).add("0,5,7"))
+  .n(irand(8).add("0,3,5"))
+  .scale("E:phrygian")
+  //.n(irand(8).add("0,4,7"))
+  //.scale("C:major")
+  .slow(2)
+  .unison(10)
+  .detune(0.2)
+  .octave(0)
+  .adsr("0.3:2.5:0.5:1")
+  .room(1).roomsize(3)
+  ._pianoroll({labels:true})
+
+$: s("bd").bank("rolandtr909")
+  //.struct("x - - x x - [x x] -")
+  //.struct("x - x - - x - -")
+  //.struct("x - - x x - - -")
+  .beat("0,4,10,13",16)
+  .attack(0.01)
+  .decay(0.55)
+  .postgain(0.8)
+
+$: s("cp").bank("rolandtr909")
+  .beat("2",16)
+  .room(slider(0.86,0,3,0.01)).roomsize(3)
+
+$: s("sd").bank("rolandtr909")
+  .beat("7",8)
+  .delay(0.8)
+  .delayfeedback(0.4)
+
+$: s("hh").bank("ace")
+  .beat("0,2,4,6,8,10,12,14",16)
+  .decay(0.2)
+  .bpf(slider(6062,2000,8000))
+  .bpq(slider(1,0,10,1))
