@@ -1,0 +1,50 @@
+// Highhats
+
+setcpm(130/4)
+
+all(x => x._pianoroll())
+
+KICK: s("bd")
+  .bank("rolandtr909")
+  .beat("0,4,8,12",16)
+  .adsr("0:0.2:0:0")
+  .duck(2)
+
+CLAP: s("cp")
+  .bank("rolandtr808")
+  .beat("4,12",16)
+  .adsr("0:0.3:0:0")
+  .delay(0.1).delayfeedback(0.1)
+
+// HIGHATS
+
+UPBEAT_HIGHHAT: s("oh").bank("Rolandtr909")
+  .beat("1,3,5,7", 8)
+  .adsr("0:0.3:0:0")
+  .hpf(1000)
+  .postgain(slider(0,0,1))
+  ._spectrum()
+
+// Do not combine with rolling high hat or ride
+HIGHHAT_SWINGING: s("oh").bank("Rolandtr909")
+  .beat("1,3,5,7", 8)
+  .adsr("0:0.3:0:0")
+  .swing(4)
+  .postgain(slider(1,0,1))
+  ._pitchwheel()
+
+ROLLING_HIGHHAT: s("oh").bank("Rolandtr909")
+  .fast(16)
+  .adsr("0:0.3:0:0")
+  .postgain(slider(0,0,1))
+  .hpf(3000)
+  ._spectrum()
+
+RIDE_SPLASH: s("rd")
+  .bank("Rolandtr909")
+  .struct("<x x>")
+  .velocity("<0.4 1>")
+  .fast(8)
+  .hpf(6000)
+  .postgain(slider(0,0,1))
+  ._spectrum()
